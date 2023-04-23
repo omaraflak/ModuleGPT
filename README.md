@@ -1,7 +1,7 @@
 # Module GPT
 
 ModuleGPT is my attempt to make an AI assistant that has access to APIs that you can easily customize.
-This is inspired by this [article](https://techcommunity.microsoft.com/t5/fasttrack-for-azure/how-chatgpt-plugins-could-work/ba-p/3761483) and AutoGPT.
+This is inspired by this [article](https://techcommunity.microsoft.com/t5/fasttrack-for-azure/how-chatgpt-plugins-could-work/ba-p/3761483) and [AutoGPT](https://github.com/Significant-Gravitas/Auto-GPT).
 
 # Usage
 
