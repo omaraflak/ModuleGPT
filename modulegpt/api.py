@@ -32,13 +32,19 @@ class ApiInterface(DataClassJsonMixin):
 
 
 @dataclass
-class ApiModuleInterface(DataClassJsonMixin):
+class ApiModuleInterfaces(DataClassJsonMixin):
     api_module: str
-    api_interface: ApiInterface
+    description: str
+    api_interfaces: list[ApiInterface]
 
 
 class ApiModule(Identifiable):
     __API_ATTR = "__api_interface"
+
+    def __init__(self, description: str):
+        super().__init__()
+        self.description = description
+
 
     @staticmethod
     def api(api_interface: ApiInterface) -> Callable[[T], T]:
@@ -50,12 +56,12 @@ class ApiModule(Identifiable):
     def call(self, api_name: str, parameters: dict[str, Any]) -> Any:
         return self._api_by_name(api_name)(**parameters)
 
-    def api_module_interfaces(self) -> list[ApiModuleInterface]:
-        return [
-            ApiModuleInterface(self.uid(), getattr(method, ApiModule.__API_ATTR))
+    def api_module_interfaces(self) -> ApiModuleInterfaces:
+        return ApiModuleInterfaces(self.uid(), self.description, [
+            getattr(method, ApiModule.__API_ATTR)
             for _, method in inspect.getmembers(self, lambda x: inspect.ismethod(x) or inspect.isfunction(x))
             if hasattr(method, ApiModule.__API_ATTR)
-        ]
+        ])
 
     def _api_by_name(self, api_name: str) -> Callable:
         for name, method in inspect.getmembers(self, lambda x: inspect.ismethod(x) or inspect.isfunction(x)):

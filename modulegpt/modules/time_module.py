@@ -3,6 +3,9 @@ from modulegpt.api import ApiModule, ApiInterface, ApiResult
 
 
 class TimeModule(ApiModule):
+    def __init__(self):
+        super().__init__("A module to get datetime")
+
     @staticmethod
     @ApiModule.api(ApiInterface(
         name="time",

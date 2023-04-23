@@ -2,6 +2,9 @@ from modulegpt.api import ApiModule, ApiInterface, ApiParameter, ApiResult
 
 
 class MathModule(ApiModule):
+    def __init__(self):
+        super().__init__("A module to do math operations")
+
     @staticmethod
     @ApiModule.api(ApiInterface(
         name="add",

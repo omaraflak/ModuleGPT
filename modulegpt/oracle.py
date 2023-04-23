@@ -1,20 +1,17 @@
+import json
 from typing import Any
 from dataclasses import dataclass
 from dataclasses_json import DataClassJsonMixin
-from modulegpt.api import ApiInterface, ApiModuleInterface, ApiModule
+from modulegpt.api import ApiInterface, ApiModuleInterfaces, ApiModule
 
 
 @dataclass
 class OracleInterface(DataClassJsonMixin):
-    api_module_interfaces: list[ApiModuleInterface]
+    api_module_interfaces: list[ApiModuleInterfaces]
 
     @classmethod
     def from_api_modules(cls, api_modules: list[ApiModule]) -> 'OracleInterface':
-        return OracleInterface([
-            api_module_interface
-            for module in api_modules
-            for api_module_interface in module.api_module_interfaces()
-        ])
+        return OracleInterface([module.api_module_interfaces() for module in api_modules])
 
 
 @dataclass
@@ -40,7 +37,8 @@ class Oracle:
         return str(module.call(request.api_name, Oracle._format_values(api, request.parameters)))
 
     def interface(self) -> str:
-        return self.oracle_interface.to_json(indent=2)
+        d = self.oracle_interface.to_dict(encode_json=True).get("api_module_interfaces")
+        return json.dumps(d, indent=2)
 
     @staticmethod
     def _format_values(api_interface: ApiInterface, parameters: list[str]) -> dict[str, Any]:
@@ -63,6 +61,6 @@ class Oracle:
         apis = dict()
         for module in modules:
             apis[module.uid()] = dict()
-            for api_module_interface in module.api_module_interfaces():
-                apis[module.uid()][api_module_interface.api_interface.name] = api_module_interface.api_interface
+            for api_interface in module.api_module_interfaces().api_interfaces:
+                apis[module.uid()][api_interface.name] = api_interface
         return apis

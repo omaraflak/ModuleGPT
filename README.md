@@ -49,34 +49,12 @@ All the APIs provided do not need any credentials, use them at will.
 
 The following APIs are available to you:
 
-{
-  "api_module_interfaces": [
-    {
-      "api_module": "MathModule_1",
-      "api_interface": {
-        "name": "add",
-        "description": "Adds two integers together",
-        "parameters": [
-          {
-            "name": "a",
-            "type": "int",
-            "description": "First number"
-          },
-          {
-            "name": "b",
-            "type": "int",
-            "description": "Second number"
-          }
-        ],
-        "result": {
-          "type": "int",
-          "description": "An integer that is the sum of `a` and `b`"
-        }
-      }
-    },
-    {
-      "api_module": "TimeModule_1",
-      "api_interface": {
+[
+  {
+    "api_module": "TimeModule_1",
+    "description": "A module to get datetime",
+    "api_interfaces": [
+      {
         "name": "time",
         "description": "Gets the current datetime",
         "parameters": [],
@@ -85,10 +63,13 @@ The following APIs are available to you:
           "description": "A string of the format '%Y-%m-%d %H:%M:%S' represent the current datetime"
         }
       }
-    },
-    {
-      "api_module": "TwitterModule_1",
-      "api_interface": {
+    ]
+  },
+  {
+    "api_module": "TwitterModule_1",
+    "description": "A module to interact with Twitter",
+    "api_interfaces": [
+      {
         "name": "tweet",
         "description": "Tweets a message to the public",
         "parameters": [
@@ -103,9 +84,9 @@ The following APIs are available to you:
           "description": "Whether or not the tweet was published successfully"
         }
       }
-    }
-  ]
-}
+    ]
+  }
+]
 ```
 
 When the assistant outputs the `<oracle></oracle>` tags, then the message is not shown in the console but is instead parsed and passed to the correct ApiModule that can handle it.

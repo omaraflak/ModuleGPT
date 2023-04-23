@@ -40,7 +40,6 @@ All the APIs provided do not need any credentials, use them at will.
 The following APIs are available to you:
 
 {self.oracle.interface()}"""
-        print(instructions)
 
         messages = [
             self._message("system", instructions),

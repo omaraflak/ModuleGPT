@@ -2,6 +2,9 @@ from modulegpt.api import ApiModule, ApiInterface, ApiParameter, ApiResult
 
 
 class TwitterModule(ApiModule):
+    def __init__(self):
+        super().__init__("A module to interact with Twitter")
+
     @ApiModule.api(ApiInterface(
         name="tweet",
         description="Tweets a message to the public",
