@@ -26,7 +26,7 @@ chat = Chat(
 chat.start()
 ```
 
-[!image](https://raw.githubusercontent.com/omaraflak/ModuleGPT/master/screen.png)
+![image](https://raw.githubusercontent.com/omaraflak/ModuleGPT/master/screen.png)
 
 # How it works
 
