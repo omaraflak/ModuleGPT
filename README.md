@@ -26,6 +26,8 @@ chat = Chat(
 chat.start()
 ```
 
+[!image](https://raw.githubusercontent.com/omaraflak/ModuleGPT/master/screen.png)
+
 # How it works
 
 Under the hood, ChatGPT is fed with the following instructions:
