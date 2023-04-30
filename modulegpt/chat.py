@@ -38,10 +38,8 @@ class Chat:
 
         oracle_request = self._parse_oracle_request(self._last_content(messages))
         if oracle_request:
-            print(f"-- DEBUG -- AI: {self._last_content(messages)}")
             oracle_response = self.oracle.call(oracle_request)
             messages.append(self._message(Chat.SYSTEM, oracle_response))
-            print(f"-- DEBUG -- System: {self._last_content(messages)}")
             messages.append(self._chat(messages))
             self._oracle_interaction(messages, current_interaction + 1, max_interactions)
 
