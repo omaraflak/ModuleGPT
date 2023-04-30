@@ -38,11 +38,15 @@ class Chat:
 
         oracle_request = self._parse_oracle_request(self._last_content(messages))
         if oracle_request:
-            oracle_response = self.oracle.call(oracle_request)
-            messages.append(self._message(Chat.SYSTEM, oracle_response))
-            messages.append(self._chat(messages))
-            self._oracle_interaction(messages, current_interaction + 1, max_interactions)
-
+            try:
+                oracle_response = self.oracle.call(oracle_request)
+            except ValueError as e:
+                messages.append(self._message(Chat.SYSTEM, str(e)))
+            else:
+                messages.append(self._message(Chat.SYSTEM, oracle_response))
+            finally:
+                messages.append(self._chat(messages))
+                self._oracle_interaction(messages, current_interaction + 1, max_interactions)
 
     def _chat(self, messages: list[Message]) -> Message:
         response = openai.ChatCompletion.create(model="gpt-3.5-turbo", messages=messages)
@@ -84,8 +88,12 @@ The following APIs are available to you:
         return messages[-1]["content"]
 
     @staticmethod
-    def _parse_oracle_request(text: str) -> Optional[str]:
+    def _parse_oracle_request(text: str) -> Optional[OracleRequest]:
         matches = re.search(Chat.PATTERN, text)
         if not matches:
             return None
-        return matches.group(1)
+        json = matches.group(1)
+        try:
+            return OracleRequest.schema().loads(json)
+        except:
+            return None

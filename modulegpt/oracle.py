@@ -30,10 +30,13 @@ class Oracle:
             for module in modules
         }
 
-    def call(self, oracle_request_json: str) -> str:
-        request = OracleRequest.from_json(oracle_request_json)
-        module = self.modules[request.module_name]
-        api = self.apis[request.module_name][request.api_name]
+    def call(self, request: OracleRequest) -> str:
+        module = self.modules.get(request.module_name)
+        if not module:
+            raise ValueError(f"No module named {request.module_name}")
+        api = self.apis[request.module_name].get(request.api_name)
+        if not api:
+            raise ValueError(f"No api named {request.api_name}")
         return str(module.call(request.api_name, Oracle._format_values(api, request.parameters)))
 
     def interface(self) -> str:
