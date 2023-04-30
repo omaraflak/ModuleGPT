@@ -18,19 +18,21 @@ class Chat:
         openai.organization = openai_organization
         openai.api_key = openai_api_key
         self.oracle = oracle
-
-    def start(self):
-        messages = [
+        self.messages = [
             self._message(Chat.SYSTEM, self._instructions()),
             self._message(Chat.USER, "Hello, who are you?"),
             self._message(Chat.ASSISTANT, "Hello, I'm an AI assistant here to help you. I can complete tasks such as sending emails or publishing tweets. How can I help you today?")
         ]
 
+    def send(self, text: str) -> str:
+        self.messages.append(self._message(Chat.USER, text))
+        self.messages.append(self._chat(self.messages))
+        self._oracle_interaction(self.messages)
+        return self._last_content(self.messages)
+
+    def forever(self):
         while True:
-            messages.append(self._message(Chat.USER, input("Human: ")))
-            messages.append(self._chat(messages))
-            self._oracle_interaction(messages)
-            print("AI:", self._last_content(messages))
+            print("AI:", self.send(input("Human: ")))
 
     def _oracle_interaction(self, messages: list[Message], current_interaction: int = 1, max_interactions: int = 3):
         if current_interaction > max_interactions:
