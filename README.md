@@ -23,7 +23,7 @@ chat = Chat(
     ])
 )
 
-chat.start()
+chat.forever()
 ```
 
 ![image](https://raw.githubusercontent.com/omaraflak/ModuleGPT/master/screen.png)
